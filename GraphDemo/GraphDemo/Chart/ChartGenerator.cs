@@ -1,76 +1,33 @@
-﻿using GraphDemo.Chart;
-using GraphDemo.Chart.ViewModels;
+﻿using GraphDemo.Chart.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace GraphDemo
+namespace GraphDemo.Chart
 {
-    public class ChartReportPageViewModel
+    public class ChartGenerator
     {
-        public string ReportHtml { set; get; }
-        private HttpClient _client;
-        //public ChartReportPageViewModel(string chartType)
+        //public ChartGenerator(string chartType,object chartData)
         //{
-        //    PopulateChart(chartType);
+        //    this.ChartConfiguration = new ChartConfiguration(chartType, chartData);
+        //    this.ApplyConfiguration();
         //}
-        public ChartReportPageViewModel(string chartType,string url)
+        public ChartGenerator(string chartType, ChartData chartData)
         {
-            _client = new HttpClient();
-            PopulateChart(chartType,url);
+            this.ChartConfiguration = new ChartConfiguration(chartType, chartData);
+            this.ApplyConfiguration();
         }
 
-        //private void PopulateChart(string chartType)
-        //{
-        //    var chartData = GetChartData();
-        //    ChartGenerator chartGenerator = new ChartGenerator(chartType, chartData);
-        //    ReportHtml =  chartGenerator.GenerateChart();
-        //}
+        private ChartConfiguration ChartConfiguration { set; get; }
+        private string chartConfigurationScript { set; get; }
 
-        private async void PopulateChart(string chartType,string url)
-        {
-            var chartData = await GetChartDataFromUrl(url);
-            ChartGenerator chartGenerator = new ChartGenerator(chartType, chartData);
-            ReportHtml = chartGenerator.GenerateChart();
-        }
-
-        private async Task<ChartData> GetChartDataFromUrl(string url)
-        {
-            try
-            {
-                ChartData chartData = null;
-                var uri = new Uri(string.Format(url, string.Empty));
-  
-                var response = await _client.GetAsync(uri);
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    chartData = JsonConvert.DeserializeObject<ChartData> (content);
-                }
-                return chartData;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        private void BuildReportHtml(string chartType)
-        {
-            var chartConfigScript = GetChartScript(chartType);
-            var html = GetHtmlWithChartConfig(chartConfigScript);
-            ReportHtml = html;
-        }
-
-        private string GetHtmlWithChartConfig(string chartConfig)
+        public string GenerateChart()
         {
             var inlineStyle = "style=\"width:100%;height:100%;\"";
             var chartJsScript = "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js\"></script>";
-            var chartConfigJsScript = $"<script>{chartConfig}</script>";
+            var chartConfigJsScript = $"<script>{chartConfigurationScript}</script>";
             var chartContent = $@"<div id=""chart-container"" {inlineStyle}>
                               <canvas id=""chart"" />
                                 </div>";
@@ -83,43 +40,18 @@ namespace GraphDemo
                               </html>";
             return document;
         }
-
-        private string GetChartScript(string chartType)
+        private void ApplyConfiguration()
         {
-            var chartConfig = GetSpendingChartConfig(chartType);
-            var script = $@"var config = {chartConfig};
+            //var chartConfig = this.ChartConfiguration.GetChartConfiguration();
+            var chartConfig = this.ChartConfiguration.GenerateChartConfiguration();
+            chartConfigurationScript = $@"var config = {chartConfig};
                         window.onload = function() {{
                           var canvasContext = document.getElementById(""chart"").getContext(""2d"");
                           new Chart(canvasContext, config);
-                        }};";
-            return script;
+                        }};";            
         }
 
-        private string GetSpendingChartConfig(string chartType)
-        {
-            var config = new
-            {
-                type = chartType,
-                data = GetChartData(),
-                options = new
-                {
-                    responsive = true,
-                    maintainAspectRatio = false,
-                    legend = new
-                    {
-                        position = "top"
-                    },
-                    animation = new
-                    {
-                        animateScale = true
-                    }
-                }
-            };
-            var jsonConfig = JsonConvert.SerializeObject(config);
-            return jsonConfig;
-        }
-
-        private object GetChartData()
+        private static object GetChartData()
         {
             var colors = GetDefaultColors();
             var labels = new[] { "Groceries", "Car", "Flat", "Electronics", "Entertainment", "Insurance" };
@@ -160,7 +92,7 @@ namespace GraphDemo
             return data;
         }
 
-        private List<Tuple<int, int, int>> GetDefaultColors()
+        private static List<Tuple<int, int, int>> GetDefaultColors()
         {
             return new List<Tuple<int, int, int>>
             {

@@ -15,7 +15,7 @@ namespace GraphDemo
 		public GraphWithChartJsPage ()
 		{
 			InitializeComponent ();
-            this.BindingContext = new ChartReportPageViewModel("bar");
+            this.BindingContext = new ChartReportPageViewModel("bar","url");
 		}
 	}
 }
