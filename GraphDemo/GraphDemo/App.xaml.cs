@@ -11,7 +11,7 @@ namespace GraphDemo
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new GraphDemoExample();
         }
 
         protected override void OnStart()
