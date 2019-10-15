@@ -8,42 +8,14 @@ namespace GraphDemo.Chart
 {
     public class ChartConfiguration
     {
-        private string chartType = "bar";
-        private object chartData = null;
+        private string _chartType = "bar";
         private ChartData _chartData;
-        //public ChartConfiguration(string chartType, object chartData)
-        //{
-        //    this.chartType = chartType;
-        //    this.chartData = chartData;
-        //}
+        
         public ChartConfiguration(string chartType, ChartData chartData)
         {
-            this.chartType = chartType;
+            this._chartType = chartType;
             this._chartData = chartData;
-        }
-        public string GetChartConfiguration()
-        {
-            var config = new
-            {
-                type = chartType,
-                data = chartData,
-                options = new
-                {
-                    responsive = true,
-                    maintainAspectRatio = false,
-                    legend = new
-                    {
-                        position = "top"
-                    },
-                    animation = new
-                    {
-                        animateScale = true
-                    }
-                }
-            };
-            var jsonConfig = JsonConvert.SerializeObject(config);
-            return jsonConfig;
-        }
+        }        
         private string GenerateChartOptions()
         {
             var chartOptions = $@"{{
@@ -308,7 +280,7 @@ namespace GraphDemo.Chart
         {
             var config = new
             {
-                type = chartType,
+                type = _chartType,
                 data = new
                 {
                     labels = _chartData.Labels,
