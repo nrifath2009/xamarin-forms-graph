@@ -6,6 +6,6 @@ namespace GraphDemo.Chart.ViewModels
 {
     public class TooltipSeries
     {
-        public List<List<int>> DataList { get; set; }
+        public List<List<double>> DataList { get; set; }
     }
 }

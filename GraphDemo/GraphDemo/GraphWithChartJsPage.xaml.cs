@@ -12,10 +12,11 @@ namespace GraphDemo
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class GraphWithChartJsPage : ContentPage
 	{
+        private string url = "https://ontrack-healthdemo.com/webapi/v3/api/Account/GetTempGraphReportData";
 		public GraphWithChartJsPage ()
 		{
 			InitializeComponent ();
-            this.BindingContext = new ChartReportPageViewModel("bar","url");
+            this.BindingContext = new ChartReportPageViewModel("bar", url);
 		}
 	}
 }

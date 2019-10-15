@@ -7,7 +7,7 @@ namespace GraphDemo.Chart.ViewModels
     public class ChartData
     {
         public List<string> Labels { get; set; }
-        public List<int> LabelsValue { get; set; }
+        public List<double> LabelsValue { get; set; }
         public List<Series> Series { get; set; }
         public List<string> TooltipLabels { get; set; }
         public object TooltipQuestionIds { get; set; }

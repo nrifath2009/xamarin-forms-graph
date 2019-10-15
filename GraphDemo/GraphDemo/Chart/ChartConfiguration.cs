@@ -135,7 +135,7 @@ namespace GraphDemo.Chart
                 fontSize: 20,
                 fontFamily: 'Raleway',
             }},
-            backgroundRules: {_chartData.BackgroundRules},
+            backgroundRules: {JsonConvert.SerializeObject(_chartData.BackgroundRules)},
             legend: {{
                 labels: {{
                     usePointStyle: true,
@@ -212,10 +212,10 @@ namespace GraphDemo.Chart
             var meta = chartInstance.controller.getDatasetMeta(i);
             Chart.helpers.each(meta.data.forEach(function(bar, index) {{
 
-                if ({_chartData.IsPatientComparativeWithProfessionalData})
+                if ({_chartData.IsPatientComparativeWithProfessionalData && _chartData.PatientData!=null})
                 {{
 
-                    if (i === 0 && $.inArray(bar._model.label, {_chartData.PatientData.Labels}) > -1) {{
+                    if (i === 0 && $.inArray(bar._model.label, {JsonConvert.SerializeObject(_chartData.PatientData.Labels)}) > -1) {{
 
                         ctx.fillText('\u25CF', bar._model.x - 5, bar._model.y + 10);
                         ctx.fillText('\u25CF', bar._model.x - 5, bar._model.y + 25);
@@ -225,8 +225,8 @@ namespace GraphDemo.Chart
                 else
                 {{
 
-                    if (bar._model.datasetLabel === {_chartData.PatientData.LabelNames}[index] &&
-                        bar._model.label === {_chartData.PatientData.Labels}[index])
+                    if ({_chartData.PatientData != null} && bar._model.datasetLabel === {JsonConvert.SerializeObject(_chartData.PatientData.LabelNames)}[index] &&
+                        bar._model.label === {JsonConvert.SerializeObject(_chartData.PatientData.Labels)}[index])
                     {{
 
                         ctx.fillText('\u25CF', bar._model.x - 5, bar._model.y + 10);

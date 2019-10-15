@@ -50,10 +50,14 @@ namespace GraphDemo
                 {
                     var content = await response.Content.ReadAsStringAsync();
                     chartData = JsonConvert.DeserializeObject<ChartData> (content);
+                    if (chartData.PatientData == null)
+                    {
+                        chartData.PatientData = new PatientData();
+                    }
                 }
                 return chartData;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
