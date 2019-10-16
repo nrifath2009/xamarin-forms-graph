@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Acr.UserDialogs;
 
 namespace GraphDemo.Droid
 {
@@ -18,7 +19,8 @@ namespace GraphDemo.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
-            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            UserDialogs.Init(this);
+            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);            
             LoadApplication(new App());
         }
     }
